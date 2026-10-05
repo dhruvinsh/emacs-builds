@@ -14,7 +14,7 @@ Both are built for **Ubuntu 24.04** and **26.04** with:
 - dynamic modules, threads, D-Bus, GSettings, inotify, systemd user unit
 - HarfBuzz + Cairo text rendering, LCMS2 colour management
 - PNG / JPEG / GIF / TIFF / SVG / WebP / ImageMagick images
-- GNU Mailutils, ALSA sound, GPM
+- ALSA sound, GPM; uses GNU Mailutils for mail retrieval (`Suggests: mailutils`)
 
 Packages install to `/usr`, `Provides: emacs` and conflict with Ubuntu's own
 `emacs-*` packages and with each other, so installing one replaces the other.
