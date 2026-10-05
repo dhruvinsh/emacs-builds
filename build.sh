@@ -97,7 +97,6 @@ BUILD_DEPS=(
     libharfbuzz-dev libfreetype-dev libfontconfig-dev libcairo2-dev
     libgif-dev libjpeg-dev libpng-dev libtiff-dev librsvg2-dev libwebp-dev
     libmagickwand-dev
-    mailutils
     "${TOOLKIT_DEPS[@]}"
 )
 apt-get install -y --no-install-recommends "${BUILD_DEPS[@]}"
@@ -179,6 +178,9 @@ shlibs_depends="$(
 )"
 [[ -n "${shlibs_depends}" ]] || die "dpkg-shlibdeps produced no dependencies"
 
+# mailutils is only a Suggests: it Recommends an MTA, so a plain
+# "apt install" of Emacs would otherwise drag in postfix.
+#
 # Both flavours provide "emacs" and conflict with it, so they replace each
 # other and Ubuntu's own emacs packages cleanly.
 distro_emacs="emacs, emacs-gtk, emacs-pgtk, emacs-lucid, emacs-nox, emacs-common, emacs-bin-common, emacs-el"
@@ -190,8 +192,9 @@ Version: ${PKG_VERSION}
 Architecture: amd64
 Maintainer: ${MAINTAINER}
 Installed-Size: $(du -sk --exclude=DEBIAN "${STAGE_DIR}" | cut -f1)
-Depends: ${shlibs_depends}, mailutils
+Depends: ${shlibs_depends}
 Recommends: fonts-noto-color-emoji
+Suggests: mailutils
 Provides: emacs
 Conflicts: ${distro_emacs}
 Replaces: ${distro_emacs}
@@ -202,7 +205,8 @@ Description: GNU Emacs ${EMACS_VERSION} (${PKG_FLAVOUR}) with native compilation
  Upstream GNU Emacs ${EMACS_VERSION} built for Ubuntu ${VERSION_ID} with
  ahead-of-time native compilation of all bundled Lisp, tree-sitter, SQLite,
  GnuTLS, libxml2, dynamic modules, threads, HarfBuzz, Cairo, LCMS2, D-Bus,
- inotify, SVG/WebP/ImageMagick images and GNU Mailutils.
+ inotify and SVG/WebP/ImageMagick images. Mail retrieval uses GNU
+ Mailutils' movemail when installed.
 EOF
 
 mkdir -p "${OUT_DIR}"
