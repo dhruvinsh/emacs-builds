@@ -26,7 +26,7 @@ Runtime dependencies come from `dpkg-shlibdeps`, including the matching
 Grab the `.deb` for your release from [Releases](../../releases):
 
 ```bash
-sudo apt install ./emacs-wayland_31.1-1~ubuntu26.04_amd64.deb
+sudo apt install ./emacs-wayland_31.1-1.ubuntu26.04_amd64.deb
 ```
 
 ## Release

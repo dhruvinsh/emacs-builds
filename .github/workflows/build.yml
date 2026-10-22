@@ -104,6 +104,9 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           cd dist
+          # GitHub rewrites "~" in asset names to "."; rename first so
+          # SHA256SUMS matches the files people actually download.
+          for f in *~*.deb; do mv -- "${f}" "${f//\~/.}"; done
           sha256sum -- *.deb >SHA256SUMS
           version="${GITHUB_REF_NAME#v}"
           cat >notes.md <<EOF
@@ -116,7 +119,7 @@ jobs:
 
           Install the file matching your Ubuntu release:
 
-              sudo apt install ./emacs-wayland_${version}~ubuntu26.04_amd64.deb
+              sudo apt install ./emacs-wayland_${version}.ubuntu26.04_amd64.deb
           EOF
           gh release create "${GITHUB_REF_NAME}" ./*.deb SHA256SUMS \
             --title "Emacs ${version}" --notes-file notes.md
